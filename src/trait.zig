@@ -1,24 +1,23 @@
-const trait = @import("std").meta.trait;
 const debug = @import("std").debug;
 
-const XValue = struct {
-    x: i32,
-};
-
-const YValue = struct {
-    y: i32,
-};
-
-pub fn printX(comptime T: type, s: T) void {
-    // if (!trait.hasField("x")(T)) {
-    //     unreachable;
-    // }
-    debug.print("{}\n", .{s.x});
+pub fn print_something(value: anytype) void {
+    const T = comptime @TypeOf(value);
+    T.print(value);
 }
 
+const Foo = struct {
+    fn print(_: Foo) void {
+        debug.print("foo!\n", .{});
+    }
+};
+
+const Bar = struct {
+    fn print(_: Bar) void {
+        debug.print("bar!\n", .{});
+    }
+};
+
 pub fn main() void {
-    const x = XValue{ .x = 100 };
-    printX(XValue, x);
-    // const y = YValue{.y = 100};
-    // printX(YValue, y);
+    print_something(Foo{});
+    print_something(Bar{});
 }
